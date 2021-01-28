@@ -1,13 +1,14 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class Game extends Player {
 	int [] ruler_array= {0,0,0,0};
-	Game()
+	
+	
+	Game ()
 	{
-		super();
+		controller();
 	}
-	
-	
 	
 	
 	
@@ -33,11 +34,18 @@ public class Game extends Player {
 		}
 		return ruler;
 	}
+	
+
+
+	
+	
+	
 
 	public static void main(String args [])
 	{
-		Game hokm= new Game();
-		int ruler=hokm.chooseRuler();
+		Game object= new Game();
+		Game object2= new Game();
+		int ruler=object.chooseRuler();
 		System.out.print(ruler);
 	}
 	
