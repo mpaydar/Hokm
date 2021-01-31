@@ -1,27 +1,55 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class Player extends Node {
-	// I need to use an array helper to let me know which of the 52 cards has been used
-	// so a 2D array with 4 row: each row representing a kind of card
-	// 					  13 column: each column represent ranks Ace to King
-	Node first=null;
-	String nameOfPlayer="";
-	Node last=null;
 	
-	Player ()
+	protected Node first=null;
+	protected Node last=null;
+	String nameOfPlayer="";
+	Player()
 	{
 		super();
-		player_number++;
 		System.out.print("Welcome, Enter Player Name: ");
 		Scanner object= new Scanner(System.in);
-		this.nameOfPlayer=object.next();
-		Node new_card= new Node();
-		this.first=new_card;
-		this.last=new_card;
+		nameOfPlayer=object.next();
+		Node new_node=new Node();
+		first=new_node;
+		last=new_node;
+	}
+	
+	
+	void handOutCard(ArrayList <String> cards, String word)
+	{
+		
+			Node new_card=new Node();
+			new_card.card_info=word;
+			last.next=new_card;
+			last=new_card;
+				
+			
+	}
+
+	
+	void seeHand()
+	{
+		Node temp=first.next;
+		while(temp!=null)
+		{
+				
+				System.out.print(temp.card_info + "   ");
+				temp=temp.next;
+			
+		}
+		
+
+		System.out.println("");
 		
 	}
 	
+
 	void chooseTeamMate()
 	{
 		System.out.print("Which player you like to be your teammate?");
@@ -31,94 +59,121 @@ public class Player extends Node {
 	}
 	
 	
+	int getRandNumber(int UpperBound)
+	{
+		Random r= new Random();
+		int rand = r.nextInt(UpperBound);
+		return rand;
+	}
 	
-	void handOutCard()
+	
+	
+
+	
+	void readSecondaryArray(ArrayList <String> ma)
 	{
 		for(int i=0;i<5;i++)
 		{
-			Node new_card=new Node();
-			new_card.player_number=player_number;
-			if(this.first!=null)
-			{
-				this.last.next=new_card;
-				this.last=new_card;	
-			}
-		}
-	}
-
-	boolean legitHand()
-	{
-		Node temp=this.first.next;
-		while(temp.next.next!=null)
-		{
-			if(temp.card_rank == temp.next.card_rank)
-			{
-				if(temp.card_rank == temp.next.card_rank) 
-					{
-						return false;
-					}
-			}
-		temp=temp.next;
-		}
-		
-		return true;
-		
-	}
-	
-	void seeHand()
-	{
-		
-		Node temp=first.next;
-		boolean ok=legitHand();
-		while(temp!=null)
-		{
-			if(ok)
-			{
-				System.out.print(temp.card_kind + " " + temp.card_rank + " " );
-				temp=temp.next;
-			}
+			System.out.print(ma.get(i) + " ");
 		}
 		System.out.println("");
-		
 	}
 	
-	void controller()
-	{
-		
-		System.out.println(this.nameOfPlayer  + ", What action you like to take?");
-		System.out.println("                               1. See Your Cards"  );
-		System.out.println("                               2. choose Teammate"  );  								   
-		Scanner sc=new Scanner(System.in);
-		int action=sc.nextInt();
-		switch(action)
-		{
-		case 1:
-			handOutCard();
-			seeHand();
-			break;
-		case 2:
-			chooseTeamMate();
-			break;
-			
+	
+	
+
+	public static void main(String args [])
+	{		
+		ArrayList <String> cards= new ArrayList <String>(52);
+		ArrayList <String> playerHand=new  ArrayList <String>();
+		Scanner myReader= null;
+		String word;
+		int size=52;
+		File file =new File("Card.txt");
+
+		try {
+			myReader = new Scanner (file);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		while(myReader.hasNext())
+		{
+			word=myReader.next();
+			cards.add(word);
+		}
+		
+
+		// cards is filled at this point
+		Player p1=new Player();
+		CARD d=new CARD();
+		for(int i=0;i<5;i++)
+		{
+			int m= cards.size();
+			int rand_n=p1.getRandNumber(m);
+			String a1=d.getrandCard(cards, rand_n);
+			playerHand.add(a1);
+			cards.remove(a1);
+		}
+		p1.readSecondaryArray(playerHand);
+		
+		
+		Player p2=new Player();
+		CARD d2=new CARD();
+		ArrayList <String> play=new  ArrayList <String>();
+		for(int i=0;i<5;i++)
+		{
+			int m= cards.size();
+			int rand_n=p2.getRandNumber(m);
+			String a1=d2.getrandCard(cards, rand_n);
+			play.add(a1);
+			cards.remove(a1);
+		}
+		p2.readSecondaryArray(play);
+		
+		
+		Player p3=new Player();
+		CARD d3=new CARD();
+		ArrayList <String> play3=new  ArrayList <String>();
+		
+		for(int i=0; i<5;i++)
+		{
+		int u3= cards.size();
+		int r3=p3.getRandNumber(u3);
+		String a3= d3.getrandCard(cards, r3);
+		play3.add(a3);
+		cards.remove(a3);
+		}
+		p3.readSecondaryArray(play3);
+		
+		
+		
+		
+		Player p4=new Player();
+		CARD d4=new CARD();
+		ArrayList <String> play4=new  ArrayList <String>();
+		for(int i=0; i<5;i++)
+		{
+		int u4= cards.size();
+		int r4=p4.getRandNumber(u4);
+		String a4= d4.getrandCard(cards, r4);
+		play4.add(a4);
+		cards.remove(a4);
+		}
+		p4.readSecondaryArray(play4);
+		
+		
+		
+		
+		
+		
+		int m= cards.size();
+		System.out.print(m);
+		
+		
+		
+	
 	}
 
-		
-		
-	void SortHand()
-	{
-		System.out.print("Select The Card You want to move: "+ "   instruction: For example type KindRank: ");
-		Scanner object= new Scanner(System.in);
-		String cardFrom= object.nextLine();
-		
-	}
-	
-	
-
-	
-	
-	
-
-	
 
 }
